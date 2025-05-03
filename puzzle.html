@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08 Mei - Nadia Pramesti</title>
+
+    <script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-image: url('asset/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .transparent-overlay {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Transparan hitam */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            /* display: block; */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="transparent-overlay flex items-center justify-center">
+        <!-- Audio player -->
+        <div
+            class="rounded-2xl bg-gradient-to-br from-pink-200 via-pink-100 to-white shadow-2xl p-6 w-96 space-y-5 border-[5px] border-pink-300">
+            <div class="flex items-center space-x-4">
+                <img src="asset/perunggu-logo.jpg" class="w-16 h-16 rounded-lg shadow-md ring-2 ring-pink-300/40" />
+                <div>
+                    <h2 class="font-bold text-xl text-pink-600">33x</h2>
+                    <p class="text-base text-pink-500">Perunggu</p>
+                </div>
+            </div>
+
+            <!-- Audio controls -->
+            <div class="flex flex-col items-center space-y-3">
+                <input type="range" class="range range-xs w-full text-pink-500 bg-pink-100" min="0" max="100" value="30" />
+                <div class="flex items-center space-x-4">
+                    <button onclick="playAudio()"
+                        class="btn btn-circle bg-white text-pink-500 shadow-md hover:shadow-lg hover:bg-pink-100 transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6 4l10 6-10 6V4z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div
+            class="mb-1 p-2 w-[375px] bg-white border-[5px] border-pink-300 rounded-lg bg-gradient-to-r from-pink-300 to-white text-center">
+            <span class="text-center font-bold text-pink-500 text-lg">Selesaikan puzzle ini ya sayang</span>
+            <div>
+                <button class="btn btn-sm btn-soft btn-secondary" onclick="my_modal_3.showModal()">Lihat Contoh</button>
+                <dialog id="my_modal_3" class="modal">
+                    <div class="modal-box max-w-[365px]">
+                        <form method="dialog">
+                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <img src="asset/nadia.jpeg" class="mt-5" alt="" srcset="">
+                    </div>
+                </dialog>
+            </div>
+        </div>
+        <div class="w-[375px] h-[375px] bg-white border-[5px] border-pink-300 rounded-lg shadow-lg">
+            <div id="offstage-canvas">
+            </div>
+        </div>
+    </div>
+
+    <dialog id="modal_success" class="modal">
+        <div class="modal-box bg-white border-[5px] border-pink-300 rounded-lg bg-gradient-to-r from-pink-300 to-white">
+            <div class="flex justify-center items-center h-full">
+                <div class="text-center">
+                    <img class="h-[170px] mx-auto" src="asset/gif/kiss.gif" alt="">
+                    <p class="py-4 text-pink-500 font-semibold">Yeayyyy... berhasilll.. Sayangg dehh. Lanjut yuk</p>
+                </div>
+            </div>            
+            <div class="modal-action">
+                <a href="scrapbook.html" class="btn btn-sm btn-secondary">Ok</a>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        //Puzzle
+        let malharro = new Image();
+        malharro.src = 'asset/nadia.jpeg';
+        malharro.onload = () => {
+            const offstage = new headbreaker.Canvas('offstage-canvas', {
+                width: 375,
+                height: 375,
+                image: malharro,
+                pieceSize: 90,
+                proximity: 5,
+                borderFill: 10,
+                strokeWidth: 1.5,
+                lineSoftness: 0.18,
+                preventOffstageDrag: true,
+                fixed: true
+            });
+
+            offstage.adjustImagesToPuzzleHeight();
+            offstage.autogenerate({
+                horizontalPiecesCount: 3,
+                verticalPiecesCount: 3
+            });
+            offstage.shuffleGrid();
+            offstage.draw();
+
+            offstage.attachSolvedValidator();
+            offstage.onValid(() => {
+                var duration = 5 * 1000;
+                var end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+
+                setTimeout(() => {
+                    document.getElementById("modal_success").showModal();
+                }, 2000);
+            })
+        }
+
+        //Audio
+        audio = new Audio("asset/music/perunggu - 33x (1).mp3");
+        function playAudio() {
+            audio.play();
+            document.getElementsByClassName('transparent-overlay')[0].style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

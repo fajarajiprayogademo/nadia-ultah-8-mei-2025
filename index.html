@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09 Mei - Nadia Pramesti</title>
+
+    <script src="https://flbulgarelli.github.io/headbreaker/js/headbreaker.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-image: url('asset/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-start justify-center h-screen">
+    <div>
+        <div id="slideSatu" class="animate__animated animate__slideInDown animate__slow d-none w-80">
+            <img src="asset/hbd1.png" class="img">
+        </div>
+        <div class="text-center animate__animated animate__fadeInDown animate__delay-2s">
+           <a href="puzzle.html">tekan untuk melanjutkan</a>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function () {
+            var duration = 5 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 }
+                });
+                confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        });
+    </script>
+</body>
+
+</html>
